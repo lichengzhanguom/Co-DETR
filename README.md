@@ -10,9 +10,13 @@ In this paper, we present a novel collaborative hybrid assignments training sche
 
 ### Install
 MMCV==1.7.0
+
 mmdet==2.25.3
+
 python=3.7.16
+
 pytorch=1.13.0+cu117
+
 timm==0.4.12
 
 ### Data
