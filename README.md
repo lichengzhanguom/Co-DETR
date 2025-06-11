@@ -1,7 +1,7 @@
 ## Introduction
 This repository is a fork of [Co-DETR](https://github.com/Sense-X/Co-DETR), which implements the Co-DETR model—a novel approach to DETR-based object detection introduced in the paper "DETRs with Collaborative Hybrid Assignments Training". We leverage Co-DETR for our task.
 
-We employ Co-DETR with ViT-L, which is the best model on COCO benchmark now is. (**the first model to achieve 66.0 AP on COCO test-dev.**)
+We employ Co-DETR with ViT-L, which is the best model on COCO benchmark (**the first model to achieve 66.0 AP on COCO test-dev**).
 
 ## Running
 
