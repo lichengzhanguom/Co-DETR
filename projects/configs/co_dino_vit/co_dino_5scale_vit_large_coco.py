@@ -3,8 +3,8 @@ _base_ = [
     '../_base_/default_runtime.py'
 ]
 checkpoint_config = dict(interval=1)
-resume_from = None
-load_from = None
+resume_from = None#'/home/lichezhang/Co-DETR/work_dirs/co_dino_5scale_vit_large_coco/latest.pth'
+load_from = '/home/lichezhang/Co-DETR/work_dirs/co_dino_5scale_vit_large_coco/epoch.pth'#'../pytorch_model.pth'
 pretrained = None
 window_block_indexes = (
     list(range(0, 3)) + list(range(4, 7)) + list(range(8, 11)) + list(range(12, 15)) + list(range(16, 19)) +
@@ -59,7 +59,7 @@ model = dict(
     query_head=dict(
         type='CoDINOHead',
         num_query=1500,
-        num_classes=80,
+        num_classes=1,
         num_feature_levels=5,
         in_channels=2048,
         sync_cls_avg_factor=True,
@@ -137,7 +137,7 @@ model = dict(
             conv_out_channels=256,
             fc_out_channels=1024,
             roi_feat_size=7,
-            num_classes=80,
+            num_classes=1,
             bbox_coder=dict(
                 type='DeltaXYWHBBoxCoder',
                 target_means=[0., 0., 0., 0.],
@@ -150,7 +150,7 @@ model = dict(
             loss_bbox=dict(type='GIoULoss', loss_weight=10.0*num_dec_layer*lambda_2)))],
     bbox_head=[dict(
         type='CoATSSHead',
-        num_classes=80,
+        num_classes=1,
         in_channels=256,
         stacked_convs=1,
         feat_channels=256,
@@ -338,13 +338,14 @@ data = dict(
 evaluation = dict(metric='bbox')
 
 # learning policy
-lr_config = dict(
-    policy='step',
-    warmup='linear',
-    warmup_iters=500,
-    warmup_ratio=0.01,
-    step=[7])
-runner = dict(type='EpochBasedRunner', max_epochs=12)
+#lr_config = dict(
+#    policy='step',
+#    warmup='linear',
+#    warmup_iters=500,
+#    warmup_ratio=0.01,
+#    step=[7])
+lr_config = dict(policy='step', gamma=0.5, step=[1000])
+runner = dict(type='EpochBasedRunner', max_epochs=1000)
 
 # optimizer
 # We use layer-wise learning rate decay, but it has not been implemented.
@@ -359,9 +360,9 @@ runner = dict(type='EpochBasedRunner', max_epochs=12)
 optimizer_config = dict(grad_clip=dict(max_norm=0.1, norm_type=2))
 optimizer = dict(
     type='AdamW',
-    lr=5e-5,
+    lr=1e-5,
     weight_decay=0.01,
-    constructor='LayerDecayOptimizerConstructor',
+    #constructor='LayerDecayOptimizerConstructor',
     paramwise_cfg=dict(
         num_layers=24, layer_decay_rate=0.8))
 

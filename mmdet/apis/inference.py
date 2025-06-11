@@ -14,6 +14,9 @@ from mmdet.datasets import replace_ImageToTensor
 from mmdet.datasets.pipelines import Compose
 from mmdet.models import build_detector
 from projects import *
+import os
+from PIL import Image
+import cv2
 
 
 def init_detector(config, checkpoint=None, dataset=DatasetEnum.COCO, device='cuda:0', cfg_options=None):
@@ -250,3 +253,36 @@ def show_result_pyplot(model,
         text_color=(200, 200, 200),
         mask_color=palette,
         out_file=out_file)
+
+if __name__ == "__main__":
+    f = open("../chatgpt/test.txt", 'r')
+    lines = f.readlines()
+    f.close()
+    dict_lines = dict()
+    for line in lines:
+        name = line.strip().split("/")
+        name = name[1] + '_' + name[2] + '.png'
+        dict_lines[name] = 0
+    model = init_detector('projects/configs/co_dino_vit/co_dino_5scale_vit_large_coco.py', checkpoint='work_dirs/co_dino_5scale_vit_large_coco/epoch.pth')
+    files = os.listdir('/home/lichezhang/cubicasa5k6')
+    for file in files:
+        # try:
+        #     temp = dict_lines[file]
+        # except:
+        #     continue
+        img = os.path.join('/home/lichezhang/cubicasa5k6', file)
+        results = inference_detector(model, img)
+        #image = cv2.imread(img)
+        f=open('result2.txt', 'a')
+        f.write(img + ';')
+        for i, result in enumerate(results[0]):
+           if result[4] > 0.1:
+                x1, y1, x2, y2, score = result
+                x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+                f.write(str(x1) + ',' + str(y1) + ',' + str(x2) + ',' + str(y2) + ',' + str(score) + ';')
+                #x1, y1, x2, y2 = max(0, int(x1)-50), max(0, int(y1)-50), min(int(x2)+50, image.shape[1]), min(int(y2)+50, image.shape[0])
+                #im = image[y1:y2, x1:x2, :]
+                #cv2.imwrite(os.path.join('/home/lichezhang/cubicasa5k2', file.split('.')[0] + '_' + str(i) + '.png'), im)
+        f.write('\n')
+        f.close()
+        show_result_pyplot(model, img, results, score_thr=0.1, out_file=os.path.join('/home/lichezhang/cubicasa5k5', file))

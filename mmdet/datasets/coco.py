@@ -21,7 +21,7 @@ from .custom import CustomDataset
 
 @DATASETS.register_module()
 class CocoDataset(CustomDataset):
-
+    '''
     CLASSES = ('person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
                'train', 'truck', 'boat', 'traffic light', 'fire hydrant',
                'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog',
@@ -58,7 +58,9 @@ class CocoDataset(CustomDataset):
                (127, 167, 115), (59, 105, 106), (142, 108, 45), (196, 172, 0),
                (95, 54, 80), (128, 76, 255), (201, 57, 1), (246, 0, 122),
                (191, 162, 208)]
-
+    '''
+    CLASSES = ('door',)
+    PALETTE = [(220, 20, 60),]
     def load_annotations(self, ann_file):
         """Load annotation from COCO style annotation file.
 
@@ -72,9 +74,8 @@ class CocoDataset(CustomDataset):
         self.coco = COCO(ann_file)
         # The order of returned `cat_ids` will not
         # change with the order of the CLASSES
-        self.cat_ids = self.coco.get_cat_ids(cat_names=self.CLASSES)
-
-        self.cat2label = {cat_id: i for i, cat_id in enumerate(self.cat_ids)}
+        self.cat_ids = [1]#self.coco.get_cat_ids(cat_names=self.CLASSES)
+        self.cat2label = {1:0}#{cat_id: i for i, cat_id in enumerate(self.cat_ids)}
         self.img_ids = self.coco.get_img_ids()
         data_infos = []
         total_ann_ids = []
@@ -198,7 +199,6 @@ class CocoDataset(CustomDataset):
             bboxes_ignore=gt_bboxes_ignore,
             masks=gt_masks_ann,
             seg_map=seg_map)
-
         return ann
 
     def xyxy2xywh(self, bbox):

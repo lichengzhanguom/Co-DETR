@@ -25,7 +25,8 @@ from projects import *
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a detector')
-    parser.add_argument('config', help='train config file path')
+    #parser.add_argument('--config', default='projects/configs/co_dino/co_dino_5scale_9encoder_lsj_r50_3x_coco.py', help='train config file path')
+    parser.add_argument('--config', default='projects/configs/co_dino_vit/co_dino_5scale_vit_large_coco.py', help='train config file path')
     parser.add_argument('--work-dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume-from', help='the checkpoint file to resume from')
