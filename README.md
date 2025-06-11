@@ -1,10 +1,7 @@
 ## Introduction
 This repository is a fork of [Co-DETR](https://github.com/Sense-X/Co-DETR), which implements the Co-DETR model—a novel approach to DETR-based object detection introduced in the paper "DETRs with Collaborative Hybrid Assignments Training". We leverage Co-DETR for our task.
 
-In this paper, we present a novel collaborative hybrid assignments training scheme, namely Co-DETR, to learn more efficient and effective DETR-based detectors from versatile label assignment manners. 
-1. **Encoder optimization**: The proposed training scheme can easily enhance the encoder's learning ability in end-to-end detectors by training multiple parallel auxiliary heads supervised by one-to-many label assignments. 
-2. **Decoder optimization**: We conduct extra customized positive queries by extracting the positive coordinates from these auxiliary heads to improve attention learning of the decoder. 
-3. **State-of-the-art performance**: Co-DETR with [ViT-L](https://github.com/baaivision/EVA/tree/master/EVA-02) (304M parameters) is **the first model to achieve 66.0 AP on COCO test-dev.**
+We employ Co-DETR with ViT-L, which is the best model on COCO benchmark now is. (**the first model to achieve 66.0 AP on COCO test-dev.**)
 
 ## Running
 
@@ -24,19 +21,13 @@ Transfer the dataset to COCO format. The dataset should be organized as:
 ```
 Co-DETR
 └── data
-    ├── coco
-    │   ├── annotations
-    │   │      ├── instances_train2017.json
-    │   │      └── instances_val2017.json
-    │   ├── train2017
-    │   └── val2017
-    │
-    └── lvis_v1
+    └── coco
         ├── annotations
-        │      ├── lvis_v1_train.json
-        │      └── lvis_v1_val.json
+        │      ├── instances_train2017.json
+        │      └── instances_val2017.json
         ├── train2017
-        └── val2017        
+        └── val2017
+      
 ```
 
 ### Training
